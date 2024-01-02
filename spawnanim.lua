@@ -23,7 +23,7 @@ local function stoppingCam1stStage(durationToRender)
   DestroyAllCams()
 end
 
-local function startingCam1stStage()
+local function startSpawnCamera()
   initialLoadingIn()
 
   Wait(4500)
@@ -60,7 +60,7 @@ local function startToStandUpPlease()
 end
 
 RegisterCommand("startstartanim", function()
-  startingCam1stStage()
+  startSpawnCamera()
 end)
 
 RegisterCommand("stopstartanim", function()

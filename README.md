@@ -15,6 +15,9 @@ Just trigger this event with the right coords in "pos"
 
 ```TriggerEvent("jays-spawn-anim:doSpawnAnimationAndSpawnIn", pos)```
 
+MAKE SURE TO REMOVE PostSpawnPlayer() OR ADD A WAIT TIME BEFORE DELETING CAMERAS ETC
+
+THANKS GUYS <3
 
 EXAMPLE: QB-SPAWN 
 ```

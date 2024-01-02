@@ -4,7 +4,7 @@ local selectedEmote = randomEmotes[randomIndex]
 
 local function initialLoadingIn(coordsWhereYouSpawn)
   exports.scully_emotemenu:cancelEmote()
-  SetEntityVisible(cache.ped, false)
+  SetEntityVisible(PlayerPedId(), false)
   DoScreenFadeOut(1)
   local startingCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
   SetCamCoord(startingCam, coordsWhereYouSpawn.x + 1, coordsWhereYouSpawn.y + 1, coordsWhereYouSpawn.z + 500) -- Make this get ground coords and do maths
@@ -26,7 +26,7 @@ local function startSpawnCamera(coordsWhereYouSpawn)
   initialLoadingIn(coordsWhereYouSpawn)
   Wait(4500)
   destroyAllCameras(7500)
-  SetEntityVisible(cache.ped, true)
+  SetEntityVisible(PlayerPedId(), true)
   exports.scully_emotemenu:playEmoteByCommand(selectedEmote)
   if Config.Debug then
     print("Played emote: ",selectedEmote)

@@ -5,7 +5,8 @@ hope this helps someone.
 - feel free to do any PRs
 - i will add later on for it to work with apartments and any housing script
 
-PLEASE PLEASE JOIN MY DISCORD - REALLY TRYNA GROW THIS SHIT <3 Thanks for the support 
+PLEASE PLEASE JOIN MY DISCORD - REALLY TRYNA GROW THIS SHIT <3 Thanks for the support   
+https://discord.gg/9Z5cdJhsRM
 
 PREVIEW: https://streamable.com/g0t87h
 
@@ -68,6 +69,4 @@ RegisterNUICallback('spawnplayer', function(data, cb)
         PostSpawnPlayer()
     end
     cb('ok')
-end)```
-
-
+end)

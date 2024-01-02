@@ -8,5 +8,5 @@ shared_scripts {
 }
 
 client_scripts {
-  "spawnanimation.lua"
+  "spawnanim.lua"
 }

@@ -1,6 +1,15 @@
 just something i cooked up
 hope this helps someone. 
 
+- i will update it here once i've improved the camera animations and smoothness of transitions
+- feel free to do any PRs
+- i will add later on for it to work with apartments and any housing script
+
+PLEASE PLEASE JOIN MY DISCORD - REALLY TRYNA GROW THIS SHIT <3 Thanks for the support 
+
+PREVIEW: https://streamable.com/g0t87h
+
+
 Just trigger this event with the right coords in "pos"
 
 ```TriggerEvent("jays-spawn-anim:doSpawnAnimationAndSpawnIn", pos)```
@@ -62,10 +71,3 @@ RegisterNUICallback('spawnplayer', function(data, cb)
 end)```
 
 
-- i will update it here once i've improved the camera animations and smoothness of transitions
-- feel free to do any PRs
-- i will add later on for it to work with apartments and any housing script
-
-PLEASE PLEASE JOIN MY DISCORD - REALLY TRYNA GROW THIS SHIT <3 Thanks for the support 
-
-PREVIEW: https://streamable.com/g0t87h

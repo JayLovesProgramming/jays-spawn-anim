@@ -1,8 +1,6 @@
 This is just an example of how I edited my qb-spawn
 
-Use this to make yours work flawlessy
-
-
+Use it to edit yours to make yours work
 
 ```local QBCore = exports['qb-core']:GetCoreObject()
 local camZPlus1 = 1500
@@ -34,33 +32,18 @@ local function SetDisplay(bool)
     })
 end
 
--- local function SetCam(campos)
---     cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus1, 300.00,0.00,0.00, 110.00, false, 0)
---     PointCamAtCoord(cam2, campos.x, campos.y, campos.z + pointCamCoords)
---     SetCamActiveWithInterp(cam2, cam, cam1Time, true, true)
---     if DoesCamExist(cam) then
---         DestroyCam(cam, true)
---     end
-
---     cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus2, 300.00,0.00,0.00, 110.00, false, 0)
---     PointCamAtCoord(cam, campos.x, campos.y, campos.z + pointCamCoords2)
---     SetCamActiveWithInterp(cam, cam2, cam2Time, true, true)
---     SetEntityCoords(PlayerPedId(), campos.x, campos.y, campos.z)
--- end
-
 RegisterNetEvent('qb-spawn:client:openUI', function(value)
     SetEntityVisible(PlayerPedId(), false)
     DoScreenFadeOut(250)
-    Wait(1000)
-    DoScreenFadeIn(250)
+    Wait(200)
     QBCore.Functions.GetPlayerData(function(PlayerData)
-        print("AAAAAA")
         cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + camZPlus1, -85.00, 0.00, 0.00, 100.00, false, 0)
         SetCamActive(cam, true)
         RenderScriptCams(true, false, 1, true, true)
     end)
-    Wait(500)
+    Wait(200)
     SetDisplay(value)
+    DoScreenFadeIn(250)
 end)
 
 RegisterNetEvent('qb-houses:client:setHouseConfig', function(houseConfig)
@@ -81,7 +64,6 @@ RegisterNetEvent('qb-spawn:client:setupSpawns', function(cData, new, apps)
                     }
                 end
             end
-
             Wait(500)
             SendNUIMessage({
                 action = "setupLocations",
@@ -99,38 +81,13 @@ RegisterNetEvent('qb-spawn:client:setupSpawns', function(cData, new, apps)
     end
 end)
 
-RegisterNUICallback('setCam', function(data, cb)
-    local location = tostring(data.posname)
-    local type = tostring(data.type)
-    local label = tostring(data.label)
-    print(label)
-    currentApartment = label
-    DoScreenFadeOut(200)
-    Wait(500)
-    DoScreenFadeIn(200)
-    -- if DoesCamExist(cam) then DestroyCam(cam, true) end
-    -- if DoesCamExist(cam2) then DestroyCam(cam2, true) end
-    if type == "current" then
-        QBCore.Functions.GetPlayerData(function(PlayerData)
-            -- SetCam(PlayerData.position)
-        end)
-    elseif type == "house" then
-        SetCam(Houses[location].coords.enter)
-    elseif type == "normal" then
-    --     SetCam(QB.Spawns[location].coords)
-    -- elseif type == "appartment" then
-        -- SetCam(Apartments.Locations[location].coords.enter)
-        -- SetCam(config.locations["apartment2"].enter)
-    end
-    cb('ok')
-end)
 RegisterNUICallback('chooseAppa', function(data, cb)
     local ped = PlayerPedId()
     local appaYeet = data.label
-    print("apartment info ",currentApartment)
+    -- print("apartment info ",appaYeet)
     SetDisplay(false)
     DoScreenFadeOut(500)
-    Wait(5000)
+    Wait(2000)
     TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
     TriggerEvent('QBCore:Client:OnPlayerLoaded')
     FreezeEntityPosition(ped, false)
@@ -140,29 +97,15 @@ RegisterNUICallback('chooseAppa', function(data, cb)
     SetCamActive(cam2, false)
     DestroyCam(cam2, true)
     SetEntityVisible(ped, true)
-    print(appaYeet)
-    TriggerServerEvent("ps-housing:server:createNewApartment", currentApartment)
+    -- print(appaYeet)
+    TriggerServerEvent("ps-housing:server:createNewApartment", appaYeet)
     DoScreenFadeIn(500)
     cb('ok')
 end)
 
 local function PreSpawnPlayer()
     SetDisplay(false)
-    Wait(2000)
-end
-
-local function PostSpawnPlayer(ped)
-    FreezeEntityPosition(ped, false)
-    RenderScriptCams(false, true, 2500, true, true)
-    SetCamActive(cam, false)
-    DestroyCam(cam, true)
-    Wait(1300)
-    SetCamActive(cam2, false)
-    DestroyCam(cam2, true)
-    SetEntityVisible(PlayerPedId(), true)
-    Wait(500)
-    -- TriggerEvent("backitems:start")
-    DoScreenFadeIn(250)
+    Wait(50)
 end
 
 RegisterNUICallback('spawnplayerappartment2', function(data, cb)
@@ -176,7 +119,6 @@ RegisterNUICallback('spawnplayerappartment2', function(data, cb)
     TriggerServerEvent('qb-houses:server:SetInsideMeta', 0, false)
     TriggerServerEvent('qb-apartments:server:SetInsideMeta', 0, 0, false)
     TriggerEvent('qb-apartments:client:LastLocationHouse', Data, Data2)
-    PostSpawnPlayer()
     cb('ok')
 end)
 
@@ -190,10 +132,9 @@ RegisterNUICallback('spawnplayer', function(data, cb)
         PreSpawnPlayer()
         QBCore.Functions.GetPlayerData(function(pos)
             ped = PlayerPedId()
-            print("Spawned last location")
+            -- print("Spawned last location")
             SetEntityCoords(ped, pos.position.x, pos.position.y, pos.position.z)
             SetEntityHeading(ped, pos.position.a)
-            Wait(1000)
             TriggerEvent("jays-spawn-anim:doSpawnAnimationAndSpawnIn", pos.position)
             FreezeEntityPosition(ped, false)
         end)
@@ -203,14 +144,12 @@ RegisterNUICallback('spawnplayer', function(data, cb)
             local property_id = insideMeta.property_id
             TriggerServerEvent('ps-housing:server:enterProperty', tostring(property_id))
         end
-        -- PostSpawnPlayer()
     elseif type == "house" then
         PreSpawnPlayer()
         TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
         TriggerEvent('QBCore:Client:OnPlayerLoaded')
         local property_id = data.spawnloc.property_id
         TriggerServerEvent('ps-housing:server:enterProperty', tostring(property_id))
-        -- PostSpawnPlayer()
     elseif type == "normal" then
         local pos = QB.Spawns[location].coords
         PreSpawnPlayer()
@@ -221,27 +160,8 @@ RegisterNUICallback('spawnplayer', function(data, cb)
         SetEntityCoords(ped, pos.x, pos.y, pos.z)
         SetEntityHeading(ped, pos.w)
         TriggerEvent("jays-spawn-anim:doSpawnAnimationAndSpawnIn", pos)
-        print("Spawned A")
-        Wait(8000)
-        -- PostSpawnPlayer()
-        print("Spawned B")
+        -- print("Spawned A")
     end
-    cb('ok')
-end)
-
-RegisterNetEvent('qb-spawn:client:OpenUIForSelectCoord', function()
-    local PlayerCoord = GetEntityCoords(PlayerPedId(), 1)
-    local PlayerHeading = GetEntityHeading(PlayerPedId())
-    SendNUIMessage({
-        action = "AddCoord",
-        Coord = {x = PlayerCoord[1], y = PlayerCoord[2], z = PlayerCoord[3], h = PlayerHeading},
-            
-    })
-    SetNuiFocus(true, true)
-end)
-
-RegisterNUICallback('CloseAddCoord', function(_, cb)
-    SetNuiFocus(false, false)
     cb('ok')
 end)
 
@@ -256,5 +176,24 @@ CreateThread(function()
         end
     end
 end)
+
+
+
+
+-- RegisterNetEvent('qb-spawn:client:OpenUIForSelectCoord', function()
+--     local PlayerCoord = GetEntityCoords(PlayerPedId(), 1)
+--     local PlayerHeading = GetEntityHeading(PlayerPedId())
+--     SendNUIMessage({
+--         action = "AddCoord",
+--         Coord = {x = PlayerCoord[1], y = PlayerCoord[2], z = PlayerCoord[3], h = PlayerHeading},
+            
+--     })
+--     SetNuiFocus(true, true)
+-- end)
+
+-- RegisterNUICallback('CloseAddCoord', function(_, cb)
+--     SetNuiFocus(false, false)
+--     cb('ok')
+-- end)
 ```
 

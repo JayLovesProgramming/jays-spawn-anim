@@ -3,7 +3,7 @@ local randomIndex = math.random(1, #randomEmotes)
 local selectedEmote = randomEmotes[randomIndex]
 local inProcessOfMovingCam = false
 local freeze = false
-local startingCam
+local startingCam = nil
 local playerHeadBone
 
 local function checkIfCanContinue()
@@ -61,16 +61,15 @@ local function startSpawnCamera(coordsWhereYouSpawn)
     end
     checkIfCanContinue()
     playerHeadBone = GetPedBoneIndex(PlayerPedId(), "SKEL_HEAD")
-    ShakeCam(startingCam, "FAMILY5_DRUG_TRIP_SHAKE", 0.3)
+    startingCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
+    ShakeCam(startingCam, "FAMILY5_DRUG_TRIP_SHAKE", 0.35)
     freeze = true
     if selectedEmote == "prone" then
-      startingCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
       SetCamCoord(startingCam, GetEntityCoords(PlayerPedId()).x + 3.5, GetEntityCoords(PlayerPedId()).y - 2, GetEntityCoords(PlayerPedId()).z - 0.9 ) -- Make this get ground coords and do maths
-        PointCamAtPedBone(startingCam, PlayerPedId(), playerHeadBone, 1, 1, -0.5, true)
+      PointCamAtPedBone(startingCam, PlayerPedId(), playerHeadBone, 1, 1, -0.5, true)
       SetCamFov(startingCam, Config.CamFovProne)
       RenderScriptCams(true, true, 3500, true, true)
     else
-      startingCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
       SetCamCoord(startingCam, coordsWhereYouSpawn.x + 4, coordsWhereYouSpawn.y - 3.8, coordsWhereYouSpawn.z + 1.3) -- Make this get ground coords and do maths
       PointCamAtPedBone(startingCam, PlayerPedId(), playerHeadBone, 1, 1, 0, true)
       SetCamFov(startingCam, Config.CamFov)
